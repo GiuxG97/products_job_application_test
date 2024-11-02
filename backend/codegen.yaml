@@ -1,0 +1,8 @@
+overwrite: true
+schema: './src/schemas/*.graphql'
+# documents: './src/**/*.graphql'
+generates:
+  ./src/__generated__/graphql-schema-types.ts: # The output file for TypeScript definitions
+    plugins:
+      - 'typescript'
+      - 'typescript-resolvers'
