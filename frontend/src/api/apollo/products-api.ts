@@ -5,9 +5,12 @@ export const GET_PRODUCTS = gql(`
         products {
             id
             name
+            category {
+                id
+                name
+            }
             price
             stock
-            category
             description
         }
     }    
@@ -20,7 +23,10 @@ export const GET_PRODUCT = gql(`
             name
             price
             stock
-            category
+            category {
+                id
+                name
+            }
             description
         }
     }    
@@ -33,7 +39,9 @@ export const CREATE_PRODUCT = gql(`
             name
             price
             stock
-            category
+            category {
+                id
+            }
             description
         }
     }

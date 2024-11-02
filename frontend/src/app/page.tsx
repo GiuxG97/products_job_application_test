@@ -1,30 +1,19 @@
 import React from 'react';
 import {
-    FiSmartphone,
-    FiMonitor,
-    FiPrinter,
     FiPlusCircle,
-    FiSearch,
-    FiGrid, FiList,
+    FiList,
 } from 'react-icons/fi';
-import {
-    BsLaptop,
-    BsWater
-} from 'react-icons/bs';
 import Link from 'next/link';
 import {paths} from "@/constants/path";
+import {apolloQuery} from "@/api/apollo/api-request";
+import {GET_CATEGORIES} from "@/api/apollo/category-api";
+import {Category, GetCategoriesQuery, GetProductsQuery, Product} from "@/__generated__/graphql";
+import {getRandomColor} from "@/utils/color";
+import {GET_PRODUCTS} from "@/api/apollo/products-api";
 
-const DashboardPage = () => {
-    // Example data - in a real app, this would come from your API/database
-    const categoryStats = [
-        {name: 'Smartphone', icon: FiSmartphone, count: 24, color: 'bg-blue-500'},
-        {name: 'TV', icon: FiMonitor, count: 15, color: 'bg-green-500'},
-        {name: 'Laptop', icon: BsLaptop, count: 18, color: 'bg-purple-500'},
-        {name: 'Washer', icon: BsWater, count: 12, color: 'bg-yellow-500'},
-        {name: 'Printer', icon: FiPrinter, count: 8, color: 'bg-red-500'}
-    ];
-
-    const totalProducts = categoryStats.reduce((sum, category) => sum + category.count, 0);
+const DashboardPage = async () => {
+    const products: Product[] = (await apolloQuery<GetProductsQuery>(GET_PRODUCTS))?.products?.filter((product): product is NonNullable<typeof product> => product !== null) || [];
+    const categories: Category[] = (await apolloQuery<GetCategoriesQuery>(GET_CATEGORIES))?.categories?.filter((category): category is NonNullable<typeof category> => category !== null) || [];
 
     return (
         <div className="p-8">
@@ -40,15 +29,15 @@ const DashboardPage = () => {
                     <div>
                         <h2 className="text-lg font-semibold text-gray-700 mb-2">Total Products</h2>
                         <div className="flex items-baseline">
-                            <span className="text-4xl font-bold text-blue-600">{totalProducts}</span>
+                            <span className="text-4xl font-bold text-blue-600">{products.reduce((sum, product) => sum + product.stock, 0)}</span>
                             <span className="ml-2 text-gray-500">items</span>
                         </div>
                     </div>
                     <div>
                         <h2 className="text-lg font-semibold text-gray-700 mb-2">Categories</h2>
                         <div className="flex items-baseline">
-                            <span className="text-4xl font-bold text-blue-600">{categoryStats.length}</span>
-                            <span className="ml-2 text-gray-500">total</span>
+                            <span className="text-4xl font-bold text-blue-600">{categories.length}</span>
+                            <span className="ml-2 text-gray-500">items</span>
                         </div>
                     </div>
                 </div>
@@ -56,21 +45,23 @@ const DashboardPage = () => {
 
             {/* Category Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {categoryStats.map((category, index) => (
+                {categories.map((category, index) => (
                     <Link
                         href={`/products/category/${category.name.toLowerCase()}`}
                         key={index}
                         className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow duration-200"
                     >
                         <div className="flex items-center space-x-4">
-                            <div className={`${category.color} p-3 rounded-lg text-white`}>
-                                <category.icon size={24}/>
+                            <div className={`${getRandomColor(Number(category.id))} p-3 rounded-lg text-white`}>
+                                {/*<category.icon size={24}/>*/}
+                                <img src={category.icon || ""} className="w-10 h-10"  alt="icon" />
                             </div>
                             <div>
                                 <h3 className="text-lg font-semibold text-gray-700">{category.name}</h3>
                                 <div className="flex items-baseline">
-                                    <span className="text-2xl font-bold text-gray-800">{category.count}</span>
-                                    <span className="ml-2 text-sm text-gray-500">products</span>
+                                    <span className="text-xl font-bold text-gray-700">{products.reduce((count, product) => product.category.id === category.id ? count + 1 : count, 0)}
+                                    </span>
+                                    <span className="ml-2 text-sm text-gray-500">models</span>
                                 </div>
                             </div>
                         </div>

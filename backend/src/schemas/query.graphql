@@ -1,6 +1,5 @@
 type Query {
     products: [Product]
     product(id: ID!): Product
-    # where we have a Category enum, which type can be generated from the schema, this query is not necessary because category's values can be retrieved from the enum
     categories: [Category]
 }

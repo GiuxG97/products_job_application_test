@@ -1,7 +1,4 @@
-"use client";
-
 import React from "react";
-import {useFormState} from "react-dom"
 import {FiDollarSign, FiHash} from "react-icons/fi";
 import {createProduct} from "@/api/actions/product-actions";
 import PreviousPageButton from "@/app/components/PreviousPageButton";
@@ -10,24 +7,18 @@ import {apolloQuery} from "@/api/apollo/api-request";
 import {GET_CATEGORIES} from "@/api/apollo/category-api";
 import {capitalizeFirstLetter} from "@/utils/strings";
 
-const initialState = {
-    data: null
-}
-
 const NewProductPage = async () => {
-    const [_, formAction] = useFormState(createProduct, initialState);
-    // not really necessary this query, can be done directly by taking the category's values from the Category enum taken from the generated types
     const categories: Category[] = (await apolloQuery<GetCategoriesQuery>(GET_CATEGORIES))?.categories?.filter((category): category is NonNullable<typeof category> => category !== null) || [];
 
     return (
         <div className="min-h-screen bg-gray-50 p-8">
             <div className="mx-auto">
                 <div className="flex items-center mb-6">
-                    <PreviousPageButton/>
+                    <PreviousPageButton home />
                     <h1 className="text-2xl font-bold text-gray-800">Add New Product</h1>
                 </div>
 
-                <form action={formAction} className="bg-white rounded-lg shadow-sm p-6 text-blue-950">
+                <form action={createProduct} className="bg-white rounded-lg shadow-sm p-6 text-blue-950">
                     <div className="space-y-6">
                         <div>
                             <label className="block text-sm font-medium text-gray-700">Product Name</label>
@@ -53,7 +44,7 @@ const NewProductPage = async () => {
                                 <option value="">Select category</option>
                                 {
                                     categories.map((category) => (
-                                        <option key={category} value={category}>{capitalizeFirstLetter(category)}</option>
+                                        <option key={category.id} value={category.id}>{capitalizeFirstLetter(category.name)}</option>
                                     ))
                                 }
                                 {/*<option value="">Select category</option>*/}

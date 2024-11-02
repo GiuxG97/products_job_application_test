@@ -16,7 +16,7 @@ const ProductsListPage = async () => {
             <div className="min-h-screen bg-gray-50 p-8">
                 <div className="mx-auto">
                     <div className="flex items-center mb-6">
-                        <PreviousPageButton/>
+                        <PreviousPageButton home />
                         <h1 className="text-2xl font-bold text-gray-800">All Products</h1>
                     </div>
                     <div className="bg-white rounded-lg shadow-sm">
@@ -38,7 +38,7 @@ const ProductsListPage = async () => {
                                             <div className="font-medium text-blue-950">{product.name}</div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <span className="capitalize text-blue-950">{product.category}</span>
+                                            <span className="capitalize text-blue-950">{product.category.name}</span>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-blue-950">
                                             ${product.price.toFixed(2)}

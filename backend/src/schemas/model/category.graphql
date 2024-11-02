@@ -1,6 +1,11 @@
 # entities
-enum Category {
-    SMARTPHONE,
-    TV,
-    LAPTOP
+type Category {
+    id: ID!
+    name: String!
+    icon: String
+}
+
+# input request
+input CreateCategoryInput {
+    id: ID!
 }

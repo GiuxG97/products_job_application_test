@@ -13,7 +13,7 @@ input CreateProductInput {
     name: String!
     price: Float!
     stock: Int!
-    category: Category!
+    category: CreateCategoryInput!
     description: String
 }
 
@@ -22,7 +22,7 @@ input UpdateProductInput {
     name: String
     price: Float
     stock: Int
-    category: Category
+    category: CreateCategoryInput
     description: String
 }
 

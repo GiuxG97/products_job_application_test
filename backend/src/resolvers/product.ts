@@ -1,5 +1,5 @@
 import {simulateDelay} from "../utils/delay";
-import {products} from "../_db";
+import {categories, products} from "../_db";
 
 const productResolver = {
     Query: {
@@ -14,7 +14,8 @@ const productResolver = {
         createProduct: async (_, {input}) => {
             const newProduct = {
                 id: String(products.length + 1),
-                ...input
+                ...input,
+                category: categories.find((category) => category.id === input.category.id)
             };
             products.push(newProduct);
             return simulateDelay(() => newProduct);
@@ -22,8 +23,11 @@ const productResolver = {
         updateProduct: async (_, {id, input}) => {
             const product = products.find((product) => product.id === id);
             if (!product) throw new Error("Product not found");
+            const category = categories.find((category) => category.id === input.category.id);
+            if (!category) throw new Error("Category not found");
 
-            Object.assign(product, input);
+            // TODO: check se funziona
+            Object.assign(product, {...input, category});
             return simulateDelay(() => product);
         },
         deleteProduct: async (_, {id}) => {

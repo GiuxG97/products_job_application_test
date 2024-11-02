@@ -21,7 +21,7 @@ export function getClient() {
         // use the `ApolloClient` from "@apollo/experimental-nextjs-app-support"
         apolloClient = new ApolloClient({
             // use the `InMemoryCache` from "@apollo/experimental-nextjs-app-support"
-            cache: new InMemoryCache(),
+            cache: new InMemoryCache({resultCaching: false}),
             link: httpLink,
         });
     }
