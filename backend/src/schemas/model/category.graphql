@@ -1,0 +1,6 @@
+# entities
+enum Category {
+    SMARTPHONE,
+    TV,
+    LAPTOP
+}

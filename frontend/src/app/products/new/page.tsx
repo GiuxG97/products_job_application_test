@@ -1,28 +1,29 @@
 "use client";
 
 import React from "react";
-import { useFormState } from "react-dom"
+import {useFormState} from "react-dom"
 import {FiDollarSign, FiHash} from "react-icons/fi";
 import {createProduct} from "@/api/actions/product-actions";
+import PreviousPageButton from "@/app/components/PreviousPageButton";
+import {Category, GetCategoriesQuery} from "@/__generated__/graphql";
+import {apolloQuery} from "@/api/apollo/api-request";
+import {GET_CATEGORIES} from "@/api/apollo/category-api";
+import {capitalizeFirstLetter} from "@/utils/strings";
 
 const initialState = {
     data: null
 }
 
-const NewProductPage = () => {
-    const [formState, formAction] = useFormState(createProduct, initialState);
+const NewProductPage = async () => {
+    const [_, formAction] = useFormState(createProduct, initialState);
+    // not really necessary this query, can be done directly by taking the category's values from the Category enum taken from the generated types
+    const categories: Category[] = (await apolloQuery<GetCategoriesQuery>(GET_CATEGORIES))?.categories?.filter((category): category is NonNullable<typeof category> => category !== null) || [];
 
-    console.log("Form state:", formState);
     return (
         <div className="min-h-screen bg-gray-50 p-8">
-            <div className="max-w-2xl mx-auto">
+            <div className="mx-auto">
                 <div className="flex items-center mb-6">
-                    {/*<button*/}
-                    {/*    onClick={() => router.back()}*/}
-                    {/*    className="text-gray-600 hover:text-gray-900 mr-4"*/}
-                    {/*>*/}
-                    {/*    <FiArrowLeft size={20} />*/}
-                    {/*</button>*/}
+                    <PreviousPageButton/>
                     <h1 className="text-2xl font-bold text-gray-800">Add New Product</h1>
                 </div>
 
@@ -50,9 +51,15 @@ const NewProductPage = () => {
                                 required
                             >
                                 <option value="">Select category</option>
-                                <option value="SMARTPHONE">Smartphone</option>
-                                <option value="TV">TV</option>
-                                <option value="LAPTOP">Laptop</option>
+                                {
+                                    categories.map((category) => (
+                                        <option key={category} value={category}>{capitalizeFirstLetter(category)}</option>
+                                    ))
+                                }
+                                {/*<option value="">Select category</option>*/}
+                                {/*<option value="SMARTPHONE">Smartphone</option>*/}
+                                {/*<option value="TV">TV</option>*/}
+                                {/*<option value="LAPTOP">Laptop</option>*/}
                             </select>
                         </div>
 
@@ -60,8 +67,9 @@ const NewProductPage = () => {
                             <div>
                                 <label className="block text-sm font-medium text-gray-700">Price</label>
                                 <div className="mt-1 relative rounded-md shadow-sm">
-                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <FiDollarSign className="text-gray-400" />
+                                    <div
+                                        className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <FiDollarSign className="text-gray-400"/>
                                     </div>
                                     <input
                                         type="number"
@@ -77,8 +85,9 @@ const NewProductPage = () => {
                             <div>
                                 <label className="block text-sm font-medium text-gray-700">Stock</label>
                                 <div className="mt-1 relative rounded-md shadow-sm">
-                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <FiHash className="text-gray-400" />
+                                    <div
+                                        className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <FiHash className="text-gray-400"/>
                                     </div>
                                     <input
                                         type="number"

@@ -1,10 +1,4 @@
 # entities
-enum Category {
-    SMARTPHONE,
-    TV,
-    LAPTOP
-}
-
 type Product {
     id: ID!
     name: String!
@@ -30,17 +24,5 @@ input UpdateProductInput {
     stock: Int
     category: Category
     description: String
-}
-
-# queries and mutations
-type Query {
-    products: [Product]
-    product(id: ID!): Product
-}
-
-type Mutation {
-    createProduct(input: CreateProductInput!): Product!
-    updateProduct(id: ID!, input: UpdateProductInput!): Product!
-    deleteProduct(id: ID!): Product!
 }
 

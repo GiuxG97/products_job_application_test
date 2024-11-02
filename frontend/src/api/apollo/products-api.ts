@@ -13,6 +13,19 @@ export const GET_PRODUCTS = gql(`
     }    
 `);
 
+export const GET_PRODUCT = gql(`
+    query GetProduct($id: ID!) {
+        product(id: $id) {
+            id
+            name
+            price
+            stock
+            category
+            description
+        }
+    }    
+`);
+
 export const CREATE_PRODUCT = gql(`
     mutation CreateProduct($input: CreateProductInput!) {
         createProduct(input: $input) {
