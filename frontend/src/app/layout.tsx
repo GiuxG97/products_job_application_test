@@ -3,7 +3,6 @@ import "./globals.css";
 import {FiGrid, FiList, FiPackage, FiPlusCircle} from "react-icons/fi";
 import Link from "next/link";
 import React from "react";
-import {ApolloWrapper} from "@/lib/apollo/ApolloWrapper";
 import {paths} from "@/constants/path";
 
 const geistSans = localFont({
@@ -23,7 +22,7 @@ export default function RootLayout({children}: Readonly<{
     return (
         <html lang="en">
         <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+            className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-y-hidden overflow-x-hidden`}
         >
         {/* Sidebar */}
         <div className="fixed left-0 top-0 h-screen w-16 bg-white shadow-lg flex flex-col items-center py-4 space-y-8">

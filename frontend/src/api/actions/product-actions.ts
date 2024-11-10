@@ -2,14 +2,13 @@
 
 import {revalidatePath} from "next/cache";
 import {CreateCategoryInput, CreateProductInput} from "@/__generated__/graphql";
-import {CREATE_PRODUCT} from "@/api/apollo/products-api";
+import {CREATE_PRODUCT, DELETE_PRODUCT} from "@/api/apollo/products-api";
 import {apolloMutation} from "@/api/apollo/api-request";
 import {paths} from "@/constants/path";
 import {redirect} from "next/navigation";
+import {setParametersPath} from "@/utils/path";
 
-export async function createProduct(formData: FormData) {
-    console.log("Creating product...");
-
+export const createProduct = async (formData: FormData) => {
     try {
         // TODO: validare il contenuto del form
         const productInput: CreateProductInput = {
@@ -21,11 +20,26 @@ export async function createProduct(formData: FormData) {
             stock: parseInt(<string>formData.get("stock")),
             description: <string>formData.get("description"),
         };
+        console.log("productInput:", productInput);
         await apolloMutation(CREATE_PRODUCT, {input: productInput});
 
-        revalidatePath(paths.HOME);
+        // revalidatePath(paths.HOME);
+        revalidatePath(paths.PRODUCTS);
     } catch (error) {
         console.error("Failed to create product:", error);
+    }
+    redirect(paths.PRODUCTS);
+}
+
+export const deleteProduct = async (id: string) => {
+    try {
+        await apolloMutation(DELETE_PRODUCT, {id});
+
+        revalidatePath(paths.PRODUCTS);
+        revalidatePath(paths.PRODUCTS_BY_CATEGORY, 'page');
+    }
+    catch (error) {
+        console.error("Failed to delete product:", error);
     }
     redirect(paths.PRODUCTS);
 }

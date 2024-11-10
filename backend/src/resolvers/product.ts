@@ -3,7 +3,9 @@ import {categories, products} from "../_db";
 
 const productResolver = {
     Query: {
-        products: async () => {
+        products: async (_, {categoryId}) => {
+            if (categoryId)
+                return simulateDelay(() => products.filter((product) => product.category.id === categoryId));
             return simulateDelay(() => products);
         },
         product: async (_, {id}) => {
@@ -32,6 +34,7 @@ const productResolver = {
         },
         deleteProduct: async (_, {id}) => {
             const index = products.findIndex((product) => product.id === id);
+            products.map((product, index) => product.id = `${index}`)
 
             if (index === -1) {
                 throw new Error("Product not found");

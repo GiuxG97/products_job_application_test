@@ -1,8 +1,8 @@
 import {gql} from "@/__generated__";
 
 export const GET_PRODUCTS = gql(`
-    query GetProducts {
-        products {
+    query GetProducts($categoryId: ID) {
+        products(categoryId: $categoryId) {
             id
             name
             category {
@@ -43,6 +43,15 @@ export const CREATE_PRODUCT = gql(`
                 id
             }
             description
+        }
+    }
+`);
+
+export const DELETE_PRODUCT = gql(`
+    mutation DeleteProduct($id: ID!) {
+        deleteProduct(id: $id) {
+            id
+            name
         }
     }
 `);

@@ -5,15 +5,16 @@ import {
 } from 'react-icons/fi';
 import Link from 'next/link';
 import {paths} from "@/constants/path";
-import {apolloQuery} from "@/api/apollo/api-request";
+import {apolloQuery, filterNulls} from "@/api/apollo/api-request";
 import {GET_CATEGORIES} from "@/api/apollo/category-api";
 import {Category, GetCategoriesQuery, GetProductsQuery, Product} from "@/__generated__/graphql";
 import {getRandomColor} from "@/utils/color";
 import {GET_PRODUCTS} from "@/api/apollo/products-api";
+import {setParametersPath} from "@/utils/path";
 
 const DashboardPage = async () => {
-    const products: Product[] = (await apolloQuery<GetProductsQuery>(GET_PRODUCTS))?.products?.filter((product): product is NonNullable<typeof product> => product !== null) || [];
-    const categories: Category[] = (await apolloQuery<GetCategoriesQuery>(GET_CATEGORIES))?.categories?.filter((category): category is NonNullable<typeof category> => category !== null) || [];
+    const products: Product[] = filterNulls((await apolloQuery<GetProductsQuery>(GET_PRODUCTS))?.products);
+    const categories: Category[] = filterNulls((await apolloQuery<GetCategoriesQuery>(GET_CATEGORIES))?.categories);
 
     return (
         <div className="p-8">
@@ -47,12 +48,12 @@ const DashboardPage = async () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {categories.map((category, index) => (
                     <Link
-                        href={`/products/category/${category.name.toLowerCase()}`}
+                        href={setParametersPath(paths.PRODUCTS_BY_CATEGORY, {id: category.id})}
                         key={index}
                         className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow duration-200"
                     >
                         <div className="flex items-center space-x-4">
-                            <div className={`${getRandomColor(Number(category.id))} p-3 rounded-lg text-white`}>
+                            <div className={`${getRandomColor(Number(category.id))} p-3 rounded-lg`}>
                                 {/*<category.icon size={24}/>*/}
                                 <img src={category.icon || ""} className="w-10 h-10"  alt="icon" />
                             </div>
