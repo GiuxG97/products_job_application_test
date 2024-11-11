@@ -1,4 +1,4 @@
-import {FiEdit2, FiInfo} from "react-icons/fi";
+import {FiInfo} from "react-icons/fi";
 import {GET_PRODUCTS} from "@/api/apollo/products-api";
 import {GetProductsQuery, Product} from "@/__generated__/graphql";
 import {apolloQuery, filterNulls} from "@/api/apollo/api-request";

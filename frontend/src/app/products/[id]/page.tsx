@@ -5,19 +5,20 @@ import {GET_PRODUCT} from "@/api/apollo/products-api";
 import {Category, GetCategoriesQuery, GetProductQuery, Product} from "@/__generated__/graphql";
 import {apolloQuery, filterNull, filterNulls} from "@/api/apollo/api-request";
 import PreviousPageButton from "@/components/buttons/PreviousPageButton";
-import {createProduct} from "@/api/actions/product-actions";
+import {updateProduct} from "@/api/actions/product-actions";
 import {capitalizeFirstLetter} from "@/utils/strings";
 import {FiDollarSign, FiEdit2, FiHash} from "react-icons/fi";
 import {GET_CATEGORIES} from "@/api/apollo/category-api";
 import Button from "@/components/buttons/Button";
 import {LiaUndoSolid} from "react-icons/lia";
+import {paths} from "@/constants/path";
 import {useRouter} from "next/navigation";
 
 type Params = {
     id: string;
 };
 
-const Product = (props: {params: Params}) => {
+const ProductDetail = (props: {params: Params}) => {
     const { id: productId } = props.params;
     const router = useRouter();
     const [product, setProduct] = React.useState<Product | undefined>(undefined);
@@ -33,24 +34,30 @@ const Product = (props: {params: Params}) => {
 
     const toggleEditing = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
-        // TODO: need to manage the back behaviour
-        if (isEditing) router.refresh();
+        // This is a workaround in order to cancel the edited changes if the user press "cancel" button
+        // This achieves the goal of clear the values inside the form with the old values, but a better solution would be to use a form library like React Hook Form
+        if (isEditing) window.location.reload();
         setIsEditing(!isEditing);
     }
 
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        await updateProduct(productId, formData);
+        router.replace(paths.PRODUCTS);
+    }
+
     if (!product) return <div>Product not found</div>;
-    console.log("product.category.id: ", product?.category.id)
-    console.log("categories: ", categories)
 
     return (
-        <div className="min-h-screen bg-gray-50 p-8">
+        <div className="min-h-screen bg-gray-50 md:p-8 sm:p-6">
             <div className="mx-auto">
                 <div className="flex items-center mb-6">
                     <PreviousPageButton home />
                     <h1 className="text-2xl font-bold text-gray-800">Product Details</h1>
                 </div>
 
-                <form action={createProduct} className="bg-white rounded-lg shadow-sm p-6 text-blue-950">
+                <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-sm p-6 text-blue-950">
                     <div className="space-y-6">
                         <div>
                             <label className="block text-sm font-medium text-gray-700">Product Name</label>
@@ -68,7 +75,7 @@ const Product = (props: {params: Params}) => {
                             <label className="block text-sm font-medium text-gray-700">Category</label>
                             <select
                                 name="category"
-                                defaultValue={product.category.id}
+                                value={product.category.id}
                                 onChange={(e) => setProduct({ ...product, category: { ...product.category, id: e.target.value } })}
                                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                 required
@@ -139,14 +146,11 @@ const Product = (props: {params: Params}) => {
                                 icon={isEditing ? <LiaUndoSolid size={18} /> : <FiEdit2 size={18} />}
                                 onClick={toggleEditing}
                             />
-
-                            <button
-                                hidden={!isEditing}
+                            <Button
+                                text="Confirm"
                                 type="submit"
-                                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
-                            >
-                                Confirm
-                            </button>
+                                className={`${!isEditing ? "hidden" : ""} px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700`}
+                            />
                         </div>
                     </div>
                 </form>
@@ -155,4 +159,4 @@ const Product = (props: {params: Params}) => {
     );
 }
 
-export default Product;
+export default ProductDetail;

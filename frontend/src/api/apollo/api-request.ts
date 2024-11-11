@@ -2,7 +2,6 @@ import {getClient} from "@/lib/apollo/apollo-client";
 import type {DocumentNode} from "graphql/index";
 import {OperationVariables} from "@apollo/client";
 
-
 function nonNullable<T>(value: T): value is NonNullable<T> {
     return value !== null;
 }
@@ -17,13 +16,12 @@ export const apolloQuery = async <T>(query: DocumentNode, variables?: OperationV
         variables: {
             ...variables,
             context: variables?.context ?? {
-                fetchOptions: {
-                    next: {
-                        revalidate: 0
-                    }
-                }
-            },
-        }
+                // fetchOptions: {
+                //     cache: 'no-store',
+                // }
+            }
+        },
+        fetchPolicy: 'no-cache'
     });
     if (errors) throw new Error(errors.map(e => e.message).join(', '));
     return data;

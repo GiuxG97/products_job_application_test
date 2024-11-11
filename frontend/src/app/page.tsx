@@ -11,13 +11,14 @@ import {Category, GetCategoriesQuery, GetProductsQuery, Product} from "@/__gener
 import {getRandomColor} from "@/utils/color";
 import {GET_PRODUCTS} from "@/api/apollo/products-api";
 import {setParametersPath} from "@/utils/path";
+import Image from "next/image";
 
 const DashboardPage = async () => {
     const products: Product[] = filterNulls((await apolloQuery<GetProductsQuery>(GET_PRODUCTS))?.products);
     const categories: Category[] = filterNulls((await apolloQuery<GetCategoriesQuery>(GET_CATEGORIES))?.categories);
 
     return (
-        <div className="p-8">
+        <>
             {/* Header */}
             <div className="mb-8">
                 <h1 className="text-2xl font-bold text-gray-800">Product Dashboard</h1>
@@ -53,11 +54,10 @@ const DashboardPage = async () => {
                         className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow duration-200"
                     >
                         <div className="flex items-center space-x-4">
-                            <div className={`${getRandomColor(Number(category.id))} p-3 rounded-lg`}>
-                                {/*<category.icon size={24}/>*/}
-                                <img src={category.icon || ""} className="w-10 h-10"  alt="icon" />
+                            <div className={`${getRandomColor(Number(category.id))} p-3 rounded-lg w-16 flex-shrink-0`}>
+                                <Image width={45} height={45} src={category.icon || ""} className="w-full" alt={`${category.name} icon`} />
                             </div>
-                            <div>
+                            <div className="truncate">
                                 <h3 className="text-lg font-semibold text-gray-700">{category.name}</h3>
                                 <div className="flex items-baseline">
                                     <span className="text-xl font-bold text-gray-700">{products.reduce((count, product) => product.category.id === category.id ? count + 1 : count, 0)}
@@ -90,7 +90,7 @@ const DashboardPage = async () => {
                     </Link>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

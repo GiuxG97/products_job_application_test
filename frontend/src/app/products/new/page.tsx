@@ -6,19 +6,25 @@ import {Category, GetCategoriesQuery} from "@/__generated__/graphql";
 import {apolloQuery, filterNulls} from "@/api/apollo/api-request";
 import {GET_CATEGORIES} from "@/api/apollo/category-api";
 import {capitalizeFirstLetter} from "@/utils/strings";
+import {redirect} from "next/navigation";
+import {paths} from "@/constants/path";
 
 const NewProductPage = async () => {
     const categories: Category[] = filterNulls((await apolloQuery<GetCategoriesQuery>(GET_CATEGORIES))?.categories);
 
     return (
-        <div className="min-h-screen bg-gray-50 p-8">
+        <div className="min-h-screen bg-gray-50 md:p-8 sm:p-6">
             <div className="mx-auto">
                 <div className="flex items-center mb-6">
                     <PreviousPageButton home />
                     <h1 className="text-2xl font-bold text-gray-800">Add New Product</h1>
                 </div>
 
-                <form action={createProduct} className="bg-white rounded-lg shadow-sm p-6 text-blue-950">
+                <form action={async (formData) => {
+                    "use server";
+                    await createProduct(formData);
+                    redirect(paths.PRODUCTS);
+                }} className="bg-white rounded-lg shadow-sm p-6 text-blue-950">
                     <div className="space-y-6">
                         <div>
                             <label className="block text-sm font-medium text-gray-700">Product Name</label>

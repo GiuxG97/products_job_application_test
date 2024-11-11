@@ -22,7 +22,7 @@ export default function RootLayout({children}: Readonly<{
     return (
         <html lang="en">
         <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-y-hidden overflow-x-hidden`}
+            className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-visible`}
         >
         {/* Sidebar */}
         <div className="fixed left-0 top-0 h-screen w-16 bg-white shadow-lg flex flex-col items-center py-4 space-y-8">
@@ -42,7 +42,7 @@ export default function RootLayout({children}: Readonly<{
             </nav>
         </div>
         {/*<ApolloWrapper>*/}
-            <div className="ml-16 p-4 min-h-screen bg-gray-50">{children}</div>
+            <div className="ml-16 min-h-screen bg-gray-50 p-6 md:p-8">{children}</div>
         {/*</ApolloWrapper>*/}
         </body>
         </html>

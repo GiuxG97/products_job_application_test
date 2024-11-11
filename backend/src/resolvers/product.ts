@@ -28,7 +28,6 @@ const productResolver = {
             const category = categories.find((category) => category.id === input.category.id);
             if (!category) throw new Error("Category not found");
 
-            // TODO: check se funziona
             Object.assign(product, {...input, category});
             return simulateDelay(() => product);
         },
