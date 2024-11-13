@@ -4,11 +4,14 @@ import {categories, products} from "../_db";
 const productResolver = {
     Query: {
         products: async (_, {categoryId}) => {
+            console.log("categoryId", categoryId);
             if (categoryId)
                 return simulateDelay(() => products.filter((product) => product.category.id === categoryId));
             return simulateDelay(() => products);
         },
         product: async (_, {id}) => {
+            console.log("product id", id);
+            console.log("product", products.find((product) => product.id === id));
             return simulateDelay(() => products.find((product) => product.id === id));
         }
     },
@@ -23,25 +26,24 @@ const productResolver = {
             return simulateDelay(() => newProduct);
         },
         updateProduct: async (_, {id, input}) => {
-            const product = products.find((product) => product.id === id);
-            if (!product) throw new Error("Product not found");
+            const productIndex = products.findIndex((product) => product.id === id);
+            if (productIndex === -1) throw new Error("Product not found");
             const category = categories.find((category) => category.id === input.category.id);
             if (!category) throw new Error("Category not found");
 
-            Object.assign(product, {...input, category});
-            return simulateDelay(() => product);
+            products[productIndex] = Object.assign(products[productIndex], {...input, category});
+            console.log(products[productIndex]);
+            return simulateDelay(() => products[productIndex]);
         },
         deleteProduct: async (_, {id}) => {
-            const index = products.findIndex((product) => product.id === id);
-            products.map((product, index) => product.id = `${index}`)
+            const productIndex = products.findIndex((product) => product.id === id);
+            if (productIndex === -1) throw new Error("Product not found");
+            const product = products[productIndex];
 
-            if (index === -1) {
-                throw new Error("Product not found");
-            }
+            products.splice(productIndex, 1);
+            products.map((product, index) => product.id = `${index + 1}`)
 
-            const deleted = products.splice(index, 1);
-
-            return simulateDelay(() => deleted[0]);
+            return simulateDelay(() => product);
         }
     }
 }

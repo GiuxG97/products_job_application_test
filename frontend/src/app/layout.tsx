@@ -47,7 +47,9 @@ export default function RootLayout({children}: Readonly<{
             </nav>
         </div>
         {/*<ApolloWrapper>*/}
-            <div className="ml-16 min-h-screen bg-gray-50 p-6 md:p-8">{children}</div>
+            <div className="ml-16 min-h-screen bg-gray-50 p-6 md:p-8">
+                {children}
+            </div>
         {/*</ApolloWrapper>*/}
         </body>
         </html>

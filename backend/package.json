@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "compile": "npx tsc",
     "codegen": "graphql-codegen",
     "start": "tsx ./src/index.ts",
     "dev": "nodemon"

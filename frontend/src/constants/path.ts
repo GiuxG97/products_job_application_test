@@ -3,5 +3,5 @@ export const paths = {
     PRODUCTS: '/products',
     PRODUCT: '/products/[id]',
     NEW_PRODUCT: '/products/new',
-    PRODUCTS_BY_CATEGORY: '/products/category/[id]',
+    PRODUCTS_BY_CATEGORY: '/products/categories/[id]',
 };

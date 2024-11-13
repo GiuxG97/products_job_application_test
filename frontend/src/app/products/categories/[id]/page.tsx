@@ -15,6 +15,8 @@ type Params = {
 
 const CategoryProductsPage = async (props: { params: Params }) => {
     const { id: categoryId } = props.params;
+    const totProducts: Product[] = filterNulls((await apolloQuery<GetProductsQuery>(GET_PRODUCTS))?.products)
+    console.log("tot products: ", totProducts.filter(p => p.category.id === categoryId).length)
     const products: Product[] = filterNulls((await apolloQuery<GetProductsQuery>(GET_PRODUCTS, {categoryId}))?.products)
 
     return (

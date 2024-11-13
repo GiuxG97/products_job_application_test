@@ -15,13 +15,13 @@ export const apolloQuery = async <T>(query: DocumentNode, variables?: OperationV
         query,
         variables: {
             ...variables,
-            context: variables?.context ?? {
-                // fetchOptions: {
-                //     cache: 'no-store',
-                // }
-            }
+            // context: variables?.context ?? {
+            //     fetchOptions: {
+            //         cache: 'no-store',
+            //     }
+            // }
         },
-        fetchPolicy: 'no-cache'
+        fetchPolicy: 'network-only',
     });
     if (errors) throw new Error(errors.map(e => e.message).join(', '));
     return data;
