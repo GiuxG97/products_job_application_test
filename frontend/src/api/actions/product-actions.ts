@@ -1,6 +1,6 @@
 'use server';
 
-import {revalidatePath, revalidateTag} from "next/cache";
+import {revalidatePath} from "next/cache";
 import {CreateCategoryInput, CreateProductInput, UpdateProductInput} from "@/__generated__/graphql";
 import {CREATE_PRODUCT, DELETE_PRODUCT, UPDATE_PRODUCT} from "@/api/apollo/products-api";
 import {apolloMutation} from "@/api/apollo/api-request";

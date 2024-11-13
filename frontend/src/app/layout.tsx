@@ -16,6 +16,11 @@ const geistMono = localFont({
     weight: "100 900",
 });
 
+export const metadata = {
+    title: "Products Manager",
+    description: "Manage and monitor your product inventory",
+};
+
 export default function RootLayout({children}: Readonly<{
     children: React.ReactNode;
 }>) {

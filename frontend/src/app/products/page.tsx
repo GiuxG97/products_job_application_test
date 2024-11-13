@@ -14,6 +14,8 @@ const ProductsListPage = async () => {
         // By using "useSuspenseQuery()", provided by the ApolloProvider from "ApolloWrapper.tsx", we can use the hook to fetch data from the server,
         // but in this way the component will be a client-side rendered component. Context is not allowed in server components
         // const { data, error } = await useSuspenseQuery(GET_PRODUCTS);
+
+
         const products: Product[] = filterNulls((await apolloQuery<GetProductsQuery>(GET_PRODUCTS))?.products);
 
         return (
