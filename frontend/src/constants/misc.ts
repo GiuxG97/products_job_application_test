@@ -1,0 +1,1 @@
+export const REVALIDATION_SESSION = 90000;

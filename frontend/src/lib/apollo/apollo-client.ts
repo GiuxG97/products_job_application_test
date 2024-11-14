@@ -3,42 +3,12 @@ import {ApolloClient, HttpLink, InMemoryCache, NormalizedCacheObject} from "@apo
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
-// export const getClient = () => {
-//     const httpLink = new HttpLink({
-//         uri: APOLLO_HOST,
-//         credentials: 'same-origin',
-//     });
-//     return new ApolloClient({
-//         cache: new InMemoryCache({addTypename: false}),
-//         link: typeof window === "undefined"
-//             ? ApolloLink.from([
-//                 // in a SSR environment, if you use multipart features like
-//                 // @defer, you need to decide how to handle these.
-//                 // This strips all interfaces with a `@defer` directive from your queries.
-//                 new SSRMultipartLink({
-//                     stripDefer: true,
-//                 }),
-//                 httpLink,
-//             ])
-//             : httpLink,
-//         defaultOptions: {
-//             watchQuery: {
-//                 fetchPolicy: 'no-cache',
-//             },
-//             query: {
-//                 fetchPolicy: 'no-cache',
-//             },
-//         }
-//     });
-// };
 export function getClient() {
     // This check will create a new client only if it doesn't exist or if it's running on the server (window not defined)
     // Cache is shared between users, so on the server with only a single client, this might be shared to multiple users and there is a risk of data leaks
     // If running on the server, a client will be created on each request
-    console.log("!apolloClient: ", apolloClient === undefined);
-    console.log("typeof window === 'undefined': ", typeof window === 'undefined');
-    if (!apolloClient || typeof window === 'undefined') {
-        console.log("Creating new Apollo Client");
+    const isServer = typeof window === 'undefined';
+    if (!apolloClient || isServer) {
         const httpLink = new HttpLink({
             uri: APOLLO_HOST,
             credentials: 'same-origin',
@@ -47,15 +17,7 @@ export function getClient() {
         apolloClient = new ApolloClient({
             cache: new InMemoryCache({ addTypename: false }),
             link: httpLink,
-            ssrMode: typeof window === 'undefined',
-            // defaultOptions: {
-            //     watchQuery: {
-            //         fetchPolicy: 'no-cache',
-            //     },
-            //     query: {
-            //         fetchPolicy: 'no-cache',
-            //     },
-            // }
+            ssrMode: isServer,
         });
     }
     return apolloClient;

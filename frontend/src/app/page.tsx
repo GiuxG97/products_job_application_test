@@ -9,25 +9,25 @@ import {apolloQuery, filterNulls} from "@/api/apollo/api-request";
 import {GET_CATEGORIES} from "@/api/apollo/category-api";
 import {Category, GetCategoriesQuery, GetProductsQuery, Product} from "@/__generated__/graphql";
 import {getRandomColor} from "@/utils/color";
-import {GET_PRODUCTS} from "@/api/apollo/products-api";
 import {setParametersPath} from "@/utils/path";
 import Image from "next/image";
-import {request} from "@/api/request";
-import {api} from "@/constants/api";
+import {GET_PRODUCTS} from "@/api/apollo/products-api";
 
 const DashboardPage = async () => {
-    const products: Product[] = await request(`http://localhost:3000${api.PRODUCTS}`, {revalidate: true});
+    // Fetch products and categories by calling directly Apollo Server API using Apollo Client.
+    // Since this is a server component, it is not possible to fetch data by calling "internally" the API routes (e.g. call endpoint "/api/products").
+    // To fetch API routes is necessary to call the absolute URL with host domain (e.g. "http://localhost:3000/api/products"). This means that an HTTP request and traffic is made.
+    // Provided solution: in this way we can get the data directly from the Apollo server without passing through the API routes of Next.js server, avoiding unnecessary traffic.
+    const products: Product[] = filterNulls((await apolloQuery<GetProductsQuery>(GET_PRODUCTS))?.products);
     const categories: Category[] = filterNulls((await apolloQuery<GetCategoriesQuery>(GET_CATEGORIES))?.categories);
 
     return (
         <>
-            {/* Header */}
             <div className="mb-8">
                 <h1 className="text-2xl font-bold text-gray-800">Product Dashboard</h1>
                 <p className="text-gray-600">Manage and monitor your product inventory</p>
             </div>
 
-            {/* Overview Card */}
             <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
@@ -47,7 +47,6 @@ const DashboardPage = async () => {
                 </div>
             </div>
 
-            {/* Category Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {categories.map((category, index) => (
                     <Link
@@ -72,7 +71,6 @@ const DashboardPage = async () => {
                 ))}
             </div>
 
-            {/* Quick Actions */}
             <div className="mt-8">
                 <h2 className="text-lg font-semibold text-gray-700 mb-4">Quick Actions</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

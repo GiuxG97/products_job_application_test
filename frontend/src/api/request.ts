@@ -1,3 +1,6 @@
+import {BASE_API_URL} from "@/constants/api";
+import {REVALIDATION_SESSION} from "@/constants/misc";
+
 export enum HttpMethod {
     GET = 'GET',
     POST = 'POST',
@@ -25,12 +28,12 @@ export async function request<TResponse, TBody = unknown>(
             ...(headers || {}),
         },
         body: body ? JSON.stringify(body) : undefined,
-        // Use 'no-store' to bypass cache if revalidate is set to true
-        cache: revalidate ? 'no-store' : 'force-cache',
+        // If "revalidate" is set to true, the next request will be made without cache, otherwise the cache will be used until the REVALIDATION_SESSION expires
+        next: { revalidate: revalidate ? 0 : REVALIDATION_SESSION }
     };
 
     try {
-        const response = await fetch(url, fetchOptions);
+        const response = await fetch(typeof window === 'undefined' ? `${BASE_API_URL}${url}` : url, fetchOptions);
 
         if (!response.ok) {
             const errorMessage = await response.text();

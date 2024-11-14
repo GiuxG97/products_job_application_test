@@ -1,21 +1,17 @@
 import {FiInfo} from "react-icons/fi";
-import {GET_PRODUCTS} from "@/api/apollo/products-api";
-import {GetProductsQuery, Product} from "@/__generated__/graphql";
-import {apolloQuery, filterNulls} from "@/api/apollo/api-request";
+import {Product} from "@/__generated__/graphql";
 import React from "react";
 import PreviousPageButton from "@/components/buttons/PreviousPageButton";
 import DeleteProductButton from "@/components/buttons/DeleteProductButton";
 import {setParametersPath} from "@/utils/path";
 import {paths} from "@/constants/path";
 import Link from "next/link";
+import {request} from "@/api/request";
+import {api} from "@/constants/api";
 
 const ProductsListPage = async () => {
     try {
-        // By using "useSuspenseQuery()", provided by the ApolloProvider from "ApolloWrapper.tsx", we can use the hook to fetch data from the server,
-        // but in this way the component will be a client-side rendered component. Context is not allowed in server components
-        // const { data, error } = await useSuspenseQuery(GET_PRODUCTS);
-
-        const products: Product[] = filterNulls((await apolloQuery<GetProductsQuery>(GET_PRODUCTS))?.products);
+        const products: Product[] = await request(api.PRODUCTS);
 
         return (
             <div className="min-h-screen bg-gray-50 p-8">
