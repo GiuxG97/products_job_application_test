@@ -39,7 +39,9 @@ const ProductDetail = (props: {params: Params}) => {
                 // console.log("wrong product: ", await request(setParametersPath(api.PRODUCT, {id: productId}), {revalidate: true}))
                 // console.log("wrong product 2: ", filterNull((await apolloQuery<GetProductQuery>(GET_PRODUCT, {id: productId})).product));
                 // setProduct(products.find((product) => product.id === productId));
-                setProduct(await request(setParametersPath(api.PRODUCT, {id: productId}), {revalidate: true}));
+                const data = await fetch(setParametersPath(api.PRODUCT, {id: productId}), {cache: "no-cache"});
+                setProduct(await data.json());
+                // setProduct(await request(setParametersPath(api.PRODUCT, {id: productId}), {revalidate: true}));
                 setCategories(await request(api.CATEGORIES));
             }
             catch (error) {

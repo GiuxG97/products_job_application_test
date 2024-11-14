@@ -4,14 +4,11 @@ import {categories, products} from "../_db";
 const productResolver = {
     Query: {
         products: async (_, {categoryId}) => {
-            console.log("QUERY PRODUCTS: categoryId", categoryId);
             if (categoryId)
                 return simulateDelay(() => products.filter((product) => product.category.id === categoryId));
             return simulateDelay(() => products);
         },
         product: async (_, {id}) => {
-            console.log("QUERY PRODUCT: product id", id);
-            console.log("QUERY PRODUCT: product", products.find((product) => product.id === id));
             return simulateDelay(() => products.find((product) => product.id === id));
         }
     },
@@ -32,7 +29,6 @@ const productResolver = {
             if (!category) throw new Error("Category not found");
 
             products[productIndex] = Object.assign(products[productIndex], {...input, category});
-            console.log(products[productIndex]);
             return simulateDelay(() => products[productIndex]);
         },
         deleteProduct: async (_, {id}) => {

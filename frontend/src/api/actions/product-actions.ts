@@ -39,7 +39,6 @@ export const updateProduct = async (id: string, formData: FormData) => {
             stock: parseInt(<string>formData.get("stock")),
             description: <string>formData.get("description"),
         };
-        console.log("productInput", productInput);
         await apolloMutation(UPDATE_PRODUCT, {id, input: productInput});
 
         revalidatePath(paths.PRODUCTS);

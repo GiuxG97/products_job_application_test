@@ -1,9 +1,36 @@
-import {HttpLink, ApolloClient, InMemoryCache, NormalizedCacheObject} from "@apollo/client";
-// import {ApolloClient} from "@apollo/experimental-nextjs-app-support";
 import {APOLLO_HOST} from "@/constants/api";
+import {ApolloClient, HttpLink, InMemoryCache, NormalizedCacheObject} from "@apollo/client";
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
+// export const getClient = () => {
+//     const httpLink = new HttpLink({
+//         uri: APOLLO_HOST,
+//         credentials: 'same-origin',
+//     });
+//     return new ApolloClient({
+//         cache: new InMemoryCache({addTypename: false}),
+//         link: typeof window === "undefined"
+//             ? ApolloLink.from([
+//                 // in a SSR environment, if you use multipart features like
+//                 // @defer, you need to decide how to handle these.
+//                 // This strips all interfaces with a `@defer` directive from your queries.
+//                 new SSRMultipartLink({
+//                     stripDefer: true,
+//                 }),
+//                 httpLink,
+//             ])
+//             : httpLink,
+//         defaultOptions: {
+//             watchQuery: {
+//                 fetchPolicy: 'no-cache',
+//             },
+//             query: {
+//                 fetchPolicy: 'no-cache',
+//             },
+//         }
+//     });
+// };
 export function getClient() {
     // This check will create a new client only if it doesn't exist or if it's running on the server (window not defined)
     // Cache is shared between users, so on the server with only a single client, this might be shared to multiple users and there is a risk of data leaks
@@ -21,15 +48,14 @@ export function getClient() {
             cache: new InMemoryCache({ addTypename: false }),
             link: httpLink,
             ssrMode: typeof window === 'undefined',
-            devtools: {enabled: true},
-            defaultOptions: {
-                watchQuery: {
-                    fetchPolicy: 'no-cache',
-                },
-                query: {
-                    fetchPolicy: 'no-cache',
-                },
-            }
+            // defaultOptions: {
+            //     watchQuery: {
+            //         fetchPolicy: 'no-cache',
+            //     },
+            //     query: {
+            //         fetchPolicy: 'no-cache',
+            //     },
+            // }
         });
     }
     return apolloClient;

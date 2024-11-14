@@ -17,7 +17,6 @@ import {api} from "@/constants/api";
 
 const DashboardPage = async () => {
     const products: Product[] = await request(`http://localhost:3000${api.PRODUCTS}`, {revalidate: true});
-    console.log("products", products.filter(p => p.category.id === "1").length);
     const categories: Category[] = filterNulls((await apolloQuery<GetCategoriesQuery>(GET_CATEGORIES))?.categories);
 
     return (

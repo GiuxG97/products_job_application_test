@@ -13,15 +13,13 @@ export const apolloQuery = async <T>(query: DocumentNode, variables?: OperationV
     const client = getClient();
     const { data, errors } = await client.query({
         query,
-        variables: {
-            ...variables,
-            // context: variables?.context ?? {
-            //     fetchOptions: {
-            //         cache: 'no-store',
-            //     }
-            // }
-        },
-        fetchPolicy: 'no-cache',
+        variables,
+        fetchPolicy: 'network-only',
+        context: variables?.context ?? {
+            fetchOptions: {
+                cache: 'no-store',
+            },
+        }
     });
 
     if (errors) throw new Error(errors.map(e => e.message).join(', '));
@@ -36,6 +34,5 @@ export const apolloMutation = async (mutation: DocumentNode, variables?: Operati
         fetchPolicy: 'no-cache',
     });
     if (errors) throw new Error(errors.map(e => e.message).join(', '));
-    console.log("apolloMutation - data: ", data)
     return data;
 }

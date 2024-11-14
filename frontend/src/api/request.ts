@@ -30,7 +30,6 @@ export async function request<TResponse, TBody = unknown>(
     };
 
     try {
-        console.log('Request:', url, fetchOptions);
         const response = await fetch(url, fetchOptions);
 
         if (!response.ok) {
