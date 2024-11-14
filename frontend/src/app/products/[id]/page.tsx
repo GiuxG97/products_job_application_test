@@ -33,13 +33,13 @@ const ProductDetail = (props: {params: Params}) => {
     useEffect(() => {
         (async () => {
             try {
-                const products: Product[] = filterNulls((await apolloQuery<GetProductsQuery>(GET_PRODUCTS))?.products);
-                console.log("products", products);
-                console.log("productId", productId);
-                console.log("wrong product: ", await request(setParametersPath(api.PRODUCT, {id: productId}), {revalidate: true}))
-                console.log("wrong product 2: ", filterNull((await apolloQuery<GetProductQuery>(GET_PRODUCT, {id: productId})).product));
-                setProduct(products.find((product) => product.id === productId));
-                // setProduct(await request(setParametersPath(api.PRODUCT, {id: productId}), {revalidate: true}));
+                // const products: Product[] = filterNulls((await apolloQuery<GetProductsQuery>(GET_PRODUCTS))?.products);
+                // console.log("products", products);
+                // console.log("productId", productId);
+                // console.log("wrong product: ", await request(setParametersPath(api.PRODUCT, {id: productId}), {revalidate: true}))
+                // console.log("wrong product 2: ", filterNull((await apolloQuery<GetProductQuery>(GET_PRODUCT, {id: productId})).product));
+                // setProduct(products.find((product) => product.id === productId));
+                setProduct(await request(setParametersPath(api.PRODUCT, {id: productId}), {revalidate: true}));
                 setCategories(await request(api.CATEGORIES));
             }
             catch (error) {

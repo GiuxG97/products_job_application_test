@@ -12,9 +12,12 @@ import {getRandomColor} from "@/utils/color";
 import {GET_PRODUCTS} from "@/api/apollo/products-api";
 import {setParametersPath} from "@/utils/path";
 import Image from "next/image";
+import {request} from "@/api/request";
+import {api} from "@/constants/api";
 
 const DashboardPage = async () => {
-    const products: Product[] = filterNulls((await apolloQuery<GetProductsQuery>(GET_PRODUCTS))?.products);
+    const products: Product[] = await request(`http://localhost:3000${api.PRODUCTS}`, {revalidate: true});
+    console.log("products", products.filter(p => p.category.id === "1").length);
     const categories: Category[] = filterNulls((await apolloQuery<GetCategoriesQuery>(GET_CATEGORIES))?.categories);
 
     return (

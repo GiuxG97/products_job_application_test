@@ -14,10 +14,13 @@ type Params = {
 };
 
 const CategoryProductsPage = async (props: { params: Params }) => {
+    console.log("CategoryProductsPage: ", new Date())
     const { id: categoryId } = props.params;
     const totProducts: Product[] = filterNulls((await apolloQuery<GetProductsQuery>(GET_PRODUCTS))?.products)
     console.log("tot products: ", totProducts.filter(p => p.category.id === categoryId).length)
     const products: Product[] = filterNulls((await apolloQuery<GetProductsQuery>(GET_PRODUCTS, {categoryId}))?.products)
+    console.log("products: ", products)
+    console.log("\n\n\n\n")
 
     return (
         <div className="min-h-screen bg-gray-50 p-8">

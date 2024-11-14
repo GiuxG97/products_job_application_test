@@ -21,8 +21,9 @@ export const apolloQuery = async <T>(query: DocumentNode, variables?: OperationV
             //     }
             // }
         },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'no-cache',
     });
+
     if (errors) throw new Error(errors.map(e => e.message).join(', '));
     return data;
 }
@@ -31,8 +32,10 @@ export const apolloMutation = async (mutation: DocumentNode, variables?: Operati
     const client = getClient();
     const { data, errors } = await client.mutate({
         mutation,
-        variables
+        variables,
+        fetchPolicy: 'no-cache',
     });
     if (errors) throw new Error(errors.map(e => e.message).join(', '));
+    console.log("apolloMutation - data: ", data)
     return data;
 }

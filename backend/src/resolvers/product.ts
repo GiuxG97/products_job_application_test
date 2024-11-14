@@ -4,14 +4,14 @@ import {categories, products} from "../_db";
 const productResolver = {
     Query: {
         products: async (_, {categoryId}) => {
-            console.log("categoryId", categoryId);
+            console.log("QUERY PRODUCTS: categoryId", categoryId);
             if (categoryId)
                 return simulateDelay(() => products.filter((product) => product.category.id === categoryId));
             return simulateDelay(() => products);
         },
         product: async (_, {id}) => {
-            console.log("product id", id);
-            console.log("product", products.find((product) => product.id === id));
+            console.log("QUERY PRODUCT: product id", id);
+            console.log("QUERY PRODUCT: product", products.find((product) => product.id === id));
             return simulateDelay(() => products.find((product) => product.id === id));
         }
     },

@@ -68,7 +68,6 @@ const ProductsListPage = async () => {
             </div>
         );
     } catch (error) {
-        console.error("Failed to fetch products:", error);
         return (
             <div className="min-h-screen bg-gray-50 p-8">
                 <div className="max-w-6xl mx-auto">
