@@ -5,7 +5,7 @@
   "scripts": {
     "codegen": "graphql-codegen",
     "start": "tsx ./src/index.ts",
-    "dev": "nodemon"
+    "dev": "npm run codegen && nodemon"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +17,8 @@
     "@graphql-codegen/cli": "^5.0.3",
     "@graphql-codegen/typescript": "^4.1.1",
     "@graphql-codegen/typescript-resolvers": "^4.4.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
     "graphql": "^16.9.0"
   },
   "devDependencies": {

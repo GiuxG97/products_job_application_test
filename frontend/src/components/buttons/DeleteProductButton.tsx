@@ -10,6 +10,10 @@ type Props = {
     product: Product;
 }
 
+/**
+ * Delete product passed as prop
+ * @param props - Product object
+ */
 const DeleteProductButton = (props: Props) => {
     const { product } = props;
 

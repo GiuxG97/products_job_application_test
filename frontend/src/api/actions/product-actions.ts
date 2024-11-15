@@ -6,11 +6,9 @@ import {CREATE_PRODUCT, DELETE_PRODUCT, UPDATE_PRODUCT} from "@/api/apollo/produ
 import {apolloMutation} from "@/api/apollo/api-request";
 import {paths} from "@/constants/path";
 import {redirect} from "next/navigation";
-import {setParametersPath} from "@/utils/path";
 
 export const createProduct = async (formData: FormData) => {
     try {
-        // TODO: validare il contenuto del form
         const productInput: CreateProductInput = {
             name: <string>formData.get("name"),
             category: <CreateCategoryInput>{
@@ -42,7 +40,6 @@ export const updateProduct = async (id: string, formData: FormData) => {
         await apolloMutation(UPDATE_PRODUCT, {id, input: productInput});
 
         revalidatePath(paths.PRODUCTS);
-        revalidatePath(setParametersPath(paths.PRODUCTS_BY_CATEGORY, {id: productInput.category!.id}), "page");
     }
     catch (error) {
         console.error(`Failed to update product with id ${id}:`, error);
@@ -54,7 +51,7 @@ export const deleteProduct = async (id: string) => {
         await apolloMutation(DELETE_PRODUCT, {id});
 
         revalidatePath(paths.PRODUCTS);
-        revalidatePath(paths.PRODUCTS_BY_CATEGORY, 'page');
+        revalidatePath(paths.HOME);
     }
     catch (error) {
         console.error("Failed to delete product:", error);

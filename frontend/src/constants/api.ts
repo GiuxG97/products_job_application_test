@@ -1,4 +1,4 @@
-export const APOLLO_HOST = process.env.APOLLO_HOST || 'http://localhost:4000';
+export const APOLLO_HOST = process.env.APOLLO_HOST || 'http://localhost:4000/graphql';
 
 export const BASE_API_URL = process.env.BASE_API_URL || 'http://localhost:3000';
 

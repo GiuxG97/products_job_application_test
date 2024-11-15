@@ -1,22 +1,19 @@
 "use client";
 
 import React, {useEffect} from "react";
-import {Category, GetCategoriesQuery, GetProductQuery, GetProductsQuery, Product} from "@/__generated__/graphql";
-import {apolloQuery, filterNull, filterNulls} from "@/api/apollo/api-request";
+import {Category, Product} from "@/__generated__/graphql";
 import PreviousPageButton from "@/components/buttons/PreviousPageButton";
 import {updateProduct} from "@/api/actions/product-actions";
 import {capitalizeFirstLetter} from "@/utils/strings";
 import {FiDollarSign, FiEdit2, FiHash} from "react-icons/fi";
-import {GET_CATEGORIES} from "@/api/apollo/category-api";
 import Button from "@/components/buttons/Button";
 import {LiaUndoSolid} from "react-icons/lia";
 import {paths} from "@/constants/path";
 import {useRouter} from "next/navigation";
-import {request} from "@/api/request";
 import {api} from "@/constants/api";
 import {setParametersPath} from "@/utils/path";
 import {Loader} from "@/components/loader/Loader";
-import {GET_PRODUCT, GET_PRODUCTS} from "@/api/apollo/products-api";
+import {request} from "@/api/request";
 
 type Params = {
     id: string;
@@ -33,15 +30,7 @@ const ProductDetail = (props: {params: Params}) => {
     useEffect(() => {
         (async () => {
             try {
-                // const products: Product[] = filterNulls((await apolloQuery<GetProductsQuery>(GET_PRODUCTS))?.products);
-                // console.log("products", products);
-                // console.log("productId", productId);
-                // console.log("wrong product: ", await request(setParametersPath(api.PRODUCT, {id: productId}), {revalidate: true}))
-                // console.log("wrong product 2: ", filterNull((await apolloQuery<GetProductQuery>(GET_PRODUCT, {id: productId})).product));
-                // setProduct(products.find((product) => product.id === productId));
-                const data = await fetch(setParametersPath(api.PRODUCT, {id: productId}), {cache: "no-cache"});
-                setProduct(await data.json());
-                // setProduct(await request(setParametersPath(api.PRODUCT, {id: productId}), {revalidate: true}));
+                setProduct(await request(setParametersPath(api.PRODUCT, {id: productId}), {revalidate: true}));
                 setCategories(await request(api.CATEGORIES));
             }
             catch (error) {

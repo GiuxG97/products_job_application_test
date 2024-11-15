@@ -4,7 +4,7 @@ import React from 'react';
 import Modal from "@/components/modal/Modal";
 
 type Props = {
-    confirm?: boolean;
+    confirm?: boolean;  // If true, a modal will be displayed to confirm the operation
     text?: string;
     className?: string;
     tooltip?: string;
@@ -12,6 +12,10 @@ type Props = {
     icon?: React.ReactNode;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
+/**
+ * Custom button component
+ * @param props - Custom button props with HTML button attributes
+ */
 const Button = (props: Props) => {
     const { confirm = false, text, className, tooltip, disabled, icon, ...buttonProps } = props;
     const [isModalOpen, setIsModalOpen] = React.useState(false);

@@ -1,8 +1,7 @@
 import {NextResponse} from "next/server";
-import {apolloQuery, filterNull, filterNulls} from "@/api/apollo/api-request";
-import {GetProductQuery, GetProductsQuery, Product} from "@/__generated__/graphql";
-import {GET_PRODUCT, GET_PRODUCTS} from "@/api/apollo/products-api";
-import {stripInternalFields} from "@/utils/misc";
+import {apolloQuery, filterNull} from "@/api/apollo/api-request";
+import {GetProductQuery, Product} from "@/__generated__/graphql";
+import {GET_PRODUCT} from "@/api/apollo/products-api";
 
 type Context = {
     params: {

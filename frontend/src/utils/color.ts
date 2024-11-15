@@ -5,6 +5,6 @@ export const getRandomColor = (index: number): string => {
         "bg-orange-500", "bg-gray-500", "bg-lime-500", "bg-cyan-500"
     ];
 
-    // With the modulo operator I can wrap the index around if it exceeds the length of colors array
+    // It returns one of the colors above. With the modulo operator I can wrap the index around if it exceeds the length of colors array
     return colors[index % colors.length];
 }

@@ -21,25 +21,27 @@ export const metadata = {
     description: "Manage and monitor your product inventory",
 };
 
+export const dynamic = 'force-dynamic';
+
 export default function RootLayout({children}: Readonly<{
     children: React.ReactNode;
 }>) {
     return (
         <html lang="en">
-        <body className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-visible`}>
+        <body className={`${geistSans.variable} ${geistMono.variable} overflow-x-visible`}>
             <div className="fixed left-0 top-0 h-screen w-16 bg-white shadow-lg flex flex-col items-center py-4 space-y-8">
                 <div className="text-blue-600 p-2">
                     <FiPackage size={24}/>
                 </div>
                 <nav className="flex-1 flex flex-col items-center space-y-4">
                     <Link href={paths.HOME} className="p-2 text-gray-600 hover:bg-blue-50 rounded-lg">
-                        <FiGrid size={20}/>
+                        <FiGrid size={20} title="Dashboard" />
                     </Link>
                     <Link href={paths.NEW_PRODUCT} className="p-2 text-gray-600 hover:bg-blue-50 rounded-lg">
-                        <FiPlusCircle size={20}/>
+                        <FiPlusCircle size={20} title="Create new product" />
                     </Link>
                     <Link href={paths.PRODUCTS} className="p-2 text-gray-600 hover:bg-blue-50 rounded-lg">
-                        <FiList size={20}/>
+                        <FiList size={20} title="List all products" />
                     </Link>
                 </nav>
             </div>

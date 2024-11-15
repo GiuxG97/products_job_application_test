@@ -13,6 +13,7 @@ import {setParametersPath} from "@/utils/path";
 import Image from "next/image";
 import {GET_PRODUCTS} from "@/api/apollo/products-api";
 
+
 const DashboardPage = async () => {
     // Fetch products and categories by calling directly Apollo Server API using Apollo Client.
     // Since this is a server component, it is not possible to fetch data by calling "internally" the API routes (e.g. call endpoint "/api/products").
@@ -31,6 +32,7 @@ const DashboardPage = async () => {
             <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
+                        {/*This is the total amount of products of the inventory. It is the total sum of the stock of each product.*/}
                         <h2 className="text-lg font-semibold text-gray-700 mb-2">Total Products</h2>
                         <div className="flex items-baseline">
                             <span className="text-4xl font-bold text-blue-600">{products.reduce((sum, product) => sum + product.stock, 0)}</span>
@@ -38,6 +40,7 @@ const DashboardPage = async () => {
                         </div>
                     </div>
                     <div>
+                        {/*This is the amount of the product's categories. Each product must be assigned to a category.*/}
                         <h2 className="text-lg font-semibold text-gray-700 mb-2">Categories</h2>
                         <div className="flex items-baseline">
                             <span className="text-4xl font-bold text-blue-600">{categories.length}</span>
@@ -47,6 +50,7 @@ const DashboardPage = async () => {
                 </div>
             </div>
 
+            {/*This section allows to get the products by their category. It shows the amount of products per each category */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {categories.map((category, index) => (
                     <Link

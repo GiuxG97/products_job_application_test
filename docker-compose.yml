@@ -1,0 +1,29 @@
+services:
+  apollo-server:
+    container_name: giussani_luca-apollo-server
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    networks:
+      - app-network
+
+  webapp-nextjs:
+    container_name: giussani_luca-webapp-nextjs
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+#      args:
+#        apollo_host: "http://apollo-server:4000/graphql"
+    environment:
+      APOLLO_HOST: "http://apollo-server:4000/graphql"
+      IS_BUILD_PHASE: false
+    ports:
+      - "3005:3000"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

@@ -1,17 +1,17 @@
 import {FiInfo} from "react-icons/fi";
-import {Product} from "@/__generated__/graphql";
+import {GetProductsQuery, Product} from "@/__generated__/graphql";
 import React from "react";
 import PreviousPageButton from "@/components/buttons/PreviousPageButton";
 import DeleteProductButton from "@/components/buttons/DeleteProductButton";
 import {setParametersPath} from "@/utils/path";
 import {paths} from "@/constants/path";
 import Link from "next/link";
-import {request} from "@/api/request";
-import {api} from "@/constants/api";
+import {apolloQuery, filterNulls} from "@/api/apollo/api-request";
+import {GET_PRODUCTS} from "@/api/apollo/products-api";
 
 const ProductsListPage = async () => {
     try {
-        const products: Product[] = await request(api.PRODUCTS);
+        const products: Product[] = filterNulls((await apolloQuery<GetProductsQuery>(GET_PRODUCTS))?.products);
 
         return (
             <div className="min-h-screen bg-gray-50 p-8">
@@ -41,7 +41,7 @@ const ProductsListPage = async () => {
                                         <span className="capitalize text-blue-950">{product.category.name}</span>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-blue-950">
-                                        ${product.price.toFixed(2)}
+                                        ${product.price}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-blue-950">
                                         {product.stock}
@@ -64,6 +64,7 @@ const ProductsListPage = async () => {
             </div>
         );
     } catch (error) {
+        console.error("Failed to fetch products: ", error);
         return (
             <div className="min-h-screen bg-gray-50 p-8">
                 <div className="max-w-6xl mx-auto">
