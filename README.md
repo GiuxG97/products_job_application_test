@@ -74,12 +74,18 @@ The webapp has a _responsive_ design for desktop and mobile access.
    - Run the _webapp-nextjs_ service of the _docker-compose.yml_ file
 4. Access the webapp at: `http://localhost:3005`
 5. The GraphQL Playground is available at: `http://localhost:4000/graphql`
+6. To stop the services, run: `docker-compose down`
 
 ### Installation and development
 1. Clone the repository: `git clone https://github.com/GiuxG97/products_job_application_test.git`
 2. Navigate to the _backend_ directory: `cd backend`
 3. Install the dependencies: `npm install`
 4. Start the Apollo Server: `npm dev`
-5. Navigate to the _frontend_ directory: `cd frontend`
-6. Install the dependencies: `npm install`
-7. Start the Next.js webapp: `npm dev`
+5. Open a new terminal window
+6. Navigate to the _frontend_ directory: `cd frontend`
+7. Install the dependencies: `npm install`
+8. Start the Next.js webapp: `npm dev`
+
+## Sub Projects Documentation
+- [Frontend](frontend/README.md)
+- [Backend](backend/README.md)

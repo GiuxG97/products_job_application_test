@@ -14,4 +14,4 @@ while true; do
 done
 
 docker-compose build webapp-nextjs
-docker-compose up webapp-nextjs
+docker-compose up -d webapp-nextjs
